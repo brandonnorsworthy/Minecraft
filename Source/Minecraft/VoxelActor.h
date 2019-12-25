@@ -77,4 +77,6 @@ public:
 
 	virtual void OnConstruction(const FTransform& Transform) override;
 	
+	void GenerateChunk();
+	void UpdateMesh();
 };
