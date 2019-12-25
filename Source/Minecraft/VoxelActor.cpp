@@ -61,6 +61,8 @@ void AVoxelActor::GenerateChunk()
 {
 	chunkFields.SetNumUninitialized(chunkTotalElements);
 
+	TArray<int32> noise = calculateNoise();
+
 	for (int32 x = 0; x < chunkLineElements; x++)
 	{
 		for (int32 y = 0; y < chunkLineElements; y++)
@@ -68,7 +70,8 @@ void AVoxelActor::GenerateChunk()
 			for (int32 z = 0; z < chunkZElements; z++)
 			{
 				int32 index = x + (y * chunkLineElements) + (z * chunkLineElementsP2);
-				chunkFields[index] = (z < 30) ? 1 : 0;
+
+				//chunkFields[index] = (z < 30 + noise[x + y * chunkLineElements]) ? 1 : 0;
 			}
 		}
 	}
@@ -195,3 +198,9 @@ void AVoxelActor::UpdateMesh()
 	proceduralComponent->CreateMeshSection(0, Vertices, Triangles, Normals, UVs, VertexColors, Tangents, true);
 }
 
+TArray<int32> AVoxelActor::calculateNoise_Implementation()
+{
+	TArray<int32> aa;
+	aa.SetNum(chunkLineElementsP2);
+	return aa;
+}

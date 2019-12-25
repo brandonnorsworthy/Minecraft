@@ -67,6 +67,10 @@ public:
 	UPROPERTY()
 		UProceduralMeshComponent* proceduralComponent;
 
+	UFUNCTION(BlueprintNativeEvent)
+		TArray <int32> calculateNoise();
+	virtual TArray <int32> calculateNoise_Implementation();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
