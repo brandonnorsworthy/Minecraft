@@ -7,6 +7,18 @@
 #include "ProceduralMeshComponent.h"
 #include "VoxelActor.generated.h"
 
+struct FMeshSection
+{
+	TArray<FVector> Vertices;
+	TArray<int32> Triangles;
+	TArray<FVector> Normals;
+	TArray<FVector2D> UVs;
+	TArray<FProcMeshTangent> Tangents;
+	TArray<FColor> VertexColors;
+
+	int32 elementID = 0;
+};
+
 UCLASS()
 class MINECRAFT_API AVoxelActor : public AActor
 {

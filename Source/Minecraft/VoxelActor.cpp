@@ -79,14 +79,9 @@ void AVoxelActor::GenerateChunk()
 
 void AVoxelActor::UpdateMesh()
 {
-	TArray<FVector> Vertices;
-	TArray<int32> Triangles;
-	TArray<FVector> Normals;
-	TArray<FVector2D> UVs;
-	TArray<FProcMeshTangent> Tangents;
-	TArray<FColor> VertexColors;
-
-	int32 elementID = 0;
+	TArray<FMeshSection> meshSections;
+	meshSections.SetNum(Materials.Num());
+	int32 el_num = 0;
 
 	for (int32 x = 0; x < chunkLineElements; x++)
 	{
@@ -100,6 +95,15 @@ void AVoxelActor::UpdateMesh()
 				if (meshIndex > 0)
 				{
 					meshIndex--;
+
+					TArray<FVector> &Vertices = meshSections[meshIndex].Vertices;
+					TArray<int32> &Triangles = meshSections[meshIndex].Triangles;
+					TArray<FVector> &Normals = meshSections[meshIndex].Normals;
+					TArray<FVector2D> &UVs = meshSections[meshIndex].UVs;
+					TArray<FProcMeshTangent> &Tangent = meshSections[meshIndex].Tangents;
+					TArray<FColor> &VertexColors = meshSections[meshIndex].VertexColors;
+
+					int32 elementID = meshSections[meshIndex].elementID;
 
 					int triangle_num = 0;
 					for (int i = 0; i < 6; i++)
@@ -189,13 +193,27 @@ void AVoxelActor::UpdateMesh()
 							VertexColors.Add(color); VertexColors.Add(color); VertexColors.Add(color); VertexColors.Add(color);
 						}
 					}
-					elementID += triangle_num;
+					el_num += triangle_num;
+					meshSections[meshIndex].elementID += triangle_num;
 				}
 			}
 		}
 	}
 	proceduralComponent->ClearAllMeshSections();
-	proceduralComponent->CreateMeshSection(0, Vertices, Triangles, Normals, UVs, VertexColors, Tangents, true);
+	for (int i = 0; i < meshSections.Num(); i++)
+	{
+		if (meshSections[i].Vertices.Num() > 0)
+		{
+			proceduralComponent->CreateMeshSection(i, meshSections[i].Vertices, meshSections[i].Triangles, meshSections[i].Normals, meshSections[i].UVs, meshSections[i].VertexColors, meshSections[i].Tangents, true);
+		}
+	}
+
+	int s = 0;
+	while (s < Materials.Num())
+	{
+		proceduralComponent->SetMaterial(s, Materials[s]);
+		s++;
+	}
 }
 
 TArray<int32> AVoxelActor::calculateNoise_Implementation()
