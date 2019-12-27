@@ -1,9 +1,6 @@
 # Visual Studio 2015 user specific files
 .vs/
 
-# Assest
-*.uasset
-
 # Compiled Object files
 *.slo
 *.lo
