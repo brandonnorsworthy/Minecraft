@@ -83,6 +83,8 @@ public:
 		TArray <int32> calculateNoise();
 	virtual TArray <int32> calculateNoise_Implementation();
 
+	UFUNCTION(BlueprintCallable, Category = "Voxel")
+		void setVoxel(FVector localPos, int32 value);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
