@@ -222,13 +222,3 @@ TArray<int32> AVoxelActor::calculateNoise_Implementation()
 	aa.SetNum(chunkLineElementsP2);
 	return aa;
 }
-
-void AVoxelActor::setVoxel(FVector localPos, int32 value)
-{
-	int32 x = localPos.X / voxelSize;
-	int32 y = localPos.Y / voxelSize;
-	int32 z = localPos.Z / voxelSize;
-
-	int32 index = x + (y * chunkLineElements) + (z * chunkLineElementsP2);
-	chunkFields[index] = value;
-}
