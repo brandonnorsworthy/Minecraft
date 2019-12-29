@@ -71,7 +71,10 @@ void AVoxelActor::GenerateChunk()
 			{
 				int32 index = x + (y * chunkLineElements) + (z * chunkLineElementsP2);
 
-				chunkFields[index] = (z < 30 + noise[x + y * chunkLineElements]) ? 1 : 0;
+				if (z == 30 + noise[x + y * chunkLineElements]) chunkFields[index] = 1;
+				else if (28 + noise[x + y * chunkLineElements] <= z  && z < 30 + noise[x + y * chunkLineElements]) chunkFields[index] = 2;
+				else if (z < 28 + noise[x + y * chunkLineElements]) chunkFields[index] = 3;
+				else chunkFields[index] = 0;
 			}
 		}
 	}
