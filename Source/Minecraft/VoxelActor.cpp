@@ -59,6 +59,7 @@ void AVoxelActor::OnConstruction(const FTransform& Transform)
 
 void AVoxelActor::GenerateChunk()
 {
+	FRandomStream RandomStream = FRandomStream(randomSeed);
 	chunkFields.SetNumUninitialized(chunkTotalElements);
 
 	TArray<int32> noise = calculateNoise();
@@ -71,7 +72,8 @@ void AVoxelActor::GenerateChunk()
 			{
 				int32 index = x + (y * chunkLineElements) + (z * chunkLineElementsP2);
 
-				if (z == 30 + noise[x + y * chunkLineElements]) chunkFields[index] = 1;
+				if (z == 31 + noise[x + y * chunkLineElements] && RandomStream.FRand() < 0.02) chunkFields[index] = 3;
+				else if (z == 30 + noise[x + y * chunkLineElements]) chunkFields[index] = 1;
 				else if (28 + noise[x + y * chunkLineElements] <= z  && z < 30 + noise[x + y * chunkLineElements]) chunkFields[index] = 2;
 				else if (z < 28 + noise[x + y * chunkLineElements]) chunkFields[index] = 3;
 				else chunkFields[index] = 0;
