@@ -86,6 +86,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Voxel")
 		void setVoxel(FVector localPos, int32 value);
 
+	UFUNCTION(BlueprintCallable, Category = "Voxel")
+		int32 getVoxel(FVector localPos);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
