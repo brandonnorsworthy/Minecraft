@@ -60,6 +60,8 @@ void AVoxelActor::OnConstruction(const FTransform& Transform)
 void AVoxelActor::GenerateChunk()
 {
 	FRandomStream RandomStream = FRandomStream(randomSeed);
+	TArray<FIntVector> treeCenters;
+
 	chunkFields.SetNumUninitialized(chunkTotalElements);
 
 	TArray<int32> noise = calculateNoise();
@@ -72,11 +74,49 @@ void AVoxelActor::GenerateChunk()
 			{
 				int32 index = x + (y * chunkLineElements) + (z * chunkLineElementsP2);
 
-				if (z == 31 + noise[x + y * chunkLineElements] && RandomStream.FRand() < 0.02) chunkFields[index] = 3;
+				if (z == 31 + noise[x + y * chunkLineElements] && RandomStream.FRand() < 0.02)
+				{
+					chunkFields[index] = 3;
+					treeCenters.Add(FIntVector(x, y, z));
+				}
 				else if (z == 30 + noise[x + y * chunkLineElements]) chunkFields[index] = 1;
 				else if (28 + noise[x + y * chunkLineElements] <= z  && z < 30 + noise[x + y * chunkLineElements]) chunkFields[index] = 2;
 				else if (z < 28 + noise[x + y * chunkLineElements]) chunkFields[index] = 3;
 				else chunkFields[index] = 0;
+			}
+		}
+	}
+
+	//for (int32 Index = 0; Index != treeCenters.Num(); ++Index)
+	//{
+	//	FIntVector treeCenter = treeCenters[Index];
+	for (FIntVector treeCenter : treeCenters)
+	{
+		int32 tree_height = RandomStream.RandRange(4, 6);
+		int32 randomX = RandomStream.RandRange(0, 2);
+		int32 randomY = RandomStream.RandRange(0, 2);
+		int32 randomZ = RandomStream.RandRange(0, 2);
+
+
+		//leaves
+		for (int32 tree_x = -2; tree_x < 3; tree_x++)
+		{
+			for (int32 tree_y = -2; tree_y < 3; tree_y++)
+			{
+				for (int32 tree_z = -2; tree_z < 3; tree_z++)
+				{
+					if (inRange(tree_x + treeCenter.X, chunkLineElements) && inRange(tree_y + treeCenter.Y,chunkLineElements) && inRange(tree_z + treeCenter.Z, chunkZElements))
+					{
+						float radius = FVector(tree_x * randomX, tree_y * randomY, tree_z * randomZ).Size();
+
+						if (radius <= 2.8)
+						{
+							if (RandomStream.FRand() < 0.5 || radius < 1.2)
+							//	chunkFields[treeCenter.X + tree_x + (chunkLineElements * (treeCenter.Y + tree_y)) + (chunkLineElementsP2 * (treeCenter.Z + tree_z + tree_height))] = 3;
+								chunkFields[treeCenter.X + tree_x + ((treeCenter.Y + tree_y) * chunkLineElements) + ((treeCenter.Z + tree_z + tree_height) * chunkLineElementsP2)] = 3;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -107,9 +147,9 @@ void AVoxelActor::UpdateMesh()
 					TArray<FVector2D> &UVs = meshSections[meshIndex].UVs;
 					TArray<FProcMeshTangent> &Tangent = meshSections[meshIndex].Tangents;
 					TArray<FColor> &VertexColors = meshSections[meshIndex].VertexColors;
-
 					int32 elementID = meshSections[meshIndex].elementID;
 
+					//add faces, verticies, uvs, and normals
 					int triangle_num = 0;
 					for (int i = 0; i < 6; i++)
 					{
@@ -250,4 +290,9 @@ int32 AVoxelActor::getVoxel(FVector localPos)
 	int32 index = x + (y * chunkLineElements) + (z * chunkLineElementsP2);
 
 	return chunkFields[index];
+}
+
+bool AVoxelActor::inRange(int32 value, int32 range)
+{
+	return (value >= 0 && value < range);
 }
