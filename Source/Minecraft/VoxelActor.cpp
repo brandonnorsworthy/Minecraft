@@ -124,20 +124,26 @@ void AVoxelActor::GenerateChunk()
 						if (radius <= 2.8)
 						{
 							if (RandomStream.FRand() < 0.5 || radius < 1.2)
+<<<<<<< HEAD
 								chunkFields[treeCenter.X + tree_x + ((treeCenter.Y + tree_y) * chunkLineElementsExt) + ((treeCenter.Z + tree_z + tree_height) * chunkLineElementsP2Ext)] = 21;
+=======
+							//	chunkFields[treeCenter.X + tree_x + (chunkLineElements * (treeCenter.Y + tree_y)) + (chunkLineElementsP2 * (treeCenter.Z + tree_z + tree_height))] = 3;
+								chunkFields[treeCenter.X + tree_x + ((treeCenter.Y + tree_y) * chunkLineElements) + ((treeCenter.Z + tree_z + tree_height) * chunkLineElementsP2)] = 3;
+>>>>>>> parent of d1d2111... Textured Log and Windy Leaves
 						}
 					}
 				}
 			}
 		}
+<<<<<<< HEAD
 		//tree trunk
 		for (int32 h = 0; h < tree_height; h++)
 		{
 			chunkFields[treeCenter.X + (treeCenter.Y * chunkLineElementsExt) + ((treeCenter.Z + h) * chunkLineElementsP2Ext)] = 22;
 		}
+=======
+>>>>>>> parent of d1d2111... Textured Log and Windy Leaves
 	}
-
-
 }
 
 void AVoxelActor::UpdateMesh()
