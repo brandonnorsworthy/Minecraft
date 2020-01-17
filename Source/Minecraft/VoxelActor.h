@@ -71,6 +71,12 @@ public:
 		int32 chunkLineElementsP2;
 
 	UPROPERTY()
+		int32 chunkLineElementsExt;
+
+	UPROPERTY()
+		int32 chunkLineElementsP2Ext;
+
+	UPROPERTY()
 		int32 voxelSizeHalf;
 
 	UPROPERTY()
