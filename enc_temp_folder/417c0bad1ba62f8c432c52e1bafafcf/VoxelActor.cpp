@@ -112,20 +112,14 @@ void AVoxelActor::GenerateChunk()
 						if (radius <= 2.8)
 						{
 							if (RandomStream.FRand() < 0.5 || radius < 1.2)
-								chunkFields[treeCenter.X + tree_x + ((treeCenter.Y + tree_y) * chunkLineElements) + ((treeCenter.Z + tree_z + tree_height) * chunkLineElementsP2)] = 21;
+							//	chunkFields[treeCenter.X + tree_x + (chunkLineElements * (treeCenter.Y + tree_y)) + (chunkLineElementsP2 * (treeCenter.Z + tree_z + tree_height))] = 3;
+								chunkFields[treeCenter.X + tree_x + ((treeCenter.Y + tree_y) * chunkLineElements) + ((treeCenter.Z + tree_z + tree_height) * chunkLineElementsP2)] = 3;
 						}
 					}
 				}
 			}
 		}
-		//tree trunk
-		for (int32 h = 0; h < tree_height; h++)
-		{
-			chunkFields[treeCenter.X + (treeCenter.Y * chunkLineElements) + ((treeCenter.Z + h) * chunkLineElementsP2)] = 5;
-		}
 	}
-
-
 }
 
 void AVoxelActor::UpdateMesh()
