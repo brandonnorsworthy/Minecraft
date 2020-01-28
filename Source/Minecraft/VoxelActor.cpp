@@ -60,8 +60,6 @@ void AVoxelActor::OnConstruction(const FTransform& Transform)
 void AVoxelActor::GenerateChunk()
 {
 	FRandomStream RandomStream = FRandomStream(randomSeed);
-	TArray<FIntVector> treeCenters;
-
 	chunkFields.SetNumUninitialized(chunkTotalElements);
 
 	TArray<int32> noise = calculateNoise();
@@ -74,11 +72,7 @@ void AVoxelActor::GenerateChunk()
 			{
 				int32 index = x + (y * chunkLineElements) + (z * chunkLineElementsP2);
 
-				if (z == 31 + noise[x + y * chunkLineElements] && RandomStream.FRand() < 0.02)
-				{
-					chunkFields[index] = 3;
-					treeCenters.Add(FIntVector(x, y, z));
-				}
+				if (z == 31 + noise[x + y * chunkLineElements] && RandomStream.FRand() < 0.02) chunkFields[index] = 3;
 				else if (z == 30 + noise[x + y * chunkLineElements]) chunkFields[index] = 1;
 				else if (28 + noise[x + y * chunkLineElements] <= z && z < 30 + noise[x + y * chunkLineElements]) chunkFields[index] = 2;
 				else if (z < 28 + noise[x + y * chunkLineElements]) chunkFields[index] = 3;
@@ -86,6 +80,7 @@ void AVoxelActor::GenerateChunk()
 			}
 		}
 	}
+<<<<<<< HEAD
 
 	//for (int32 Index = 0; Index != treeCenters.Num(); ++Index)
 	//{
@@ -126,6 +121,8 @@ void AVoxelActor::GenerateChunk()
 	}
 
 
+=======
+>>>>>>> parent of 6f320fc... TREES ARE WORKING
 }
 
 void AVoxelActor::UpdateMesh()
@@ -147,15 +144,24 @@ void AVoxelActor::UpdateMesh()
 				{
 					meshIndex--;
 
+<<<<<<< HEAD
 					TArray<FVector>& Vertices = meshSections[meshIndex].Vertices;
 					TArray<int32>& Triangles = meshSections[meshIndex].Triangles;
 					TArray<FVector>& Normals = meshSections[meshIndex].Normals;
 					TArray<FVector2D>& UVs = meshSections[meshIndex].UVs;
 					TArray<FProcMeshTangent>& Tangent = meshSections[meshIndex].Tangents;
 					TArray<FColor>& VertexColors = meshSections[meshIndex].VertexColors;
+=======
+					TArray<FVector> &Vertices = meshSections[meshIndex].Vertices;
+					TArray<int32> &Triangles = meshSections[meshIndex].Triangles;
+					TArray<FVector> &Normals = meshSections[meshIndex].Normals;
+					TArray<FVector2D> &UVs = meshSections[meshIndex].UVs;
+					TArray<FProcMeshTangent> &Tangent = meshSections[meshIndex].Tangents;
+					TArray<FColor> &VertexColors = meshSections[meshIndex].VertexColors;
+
+>>>>>>> parent of 6f320fc... TREES ARE WORKING
 					int32 elementID = meshSections[meshIndex].elementID;
 
-					//add faces, verticies, uvs, and normals
 					int triangle_num = 0;
 					for (int i = 0; i < 6; i++)
 					{
@@ -296,9 +302,4 @@ int32 AVoxelActor::getVoxel(FVector localPos)
 	int32 index = x + (y * chunkLineElements) + (z * chunkLineElementsP2);
 
 	return chunkFields[index];
-}
-
-bool AVoxelActor::inRange(int32 value, int32 range)
-{
-	return (value >= 0 && value < range);
 }

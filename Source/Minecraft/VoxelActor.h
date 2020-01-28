@@ -94,8 +94,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Voxel")
 		int32 getVoxel(FVector localPos);
-
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -105,11 +103,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void OnConstruction(const FTransform& Transform) override;
-
-private:
+	
 	void GenerateChunk();
-
 	void UpdateMesh();
-
-	bool inRange(int32 value, int32 range);
 };
