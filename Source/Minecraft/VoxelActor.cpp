@@ -121,7 +121,7 @@ void AVoxelActor::GenerateChunk()
 		//tree trunk
 		for (int32 h = 0; h < tree_height; h++)
 		{
-			chunkFields[treeCenter.X + (treeCenter.Y * chunkLineElements) + ((treeCenter.Z + h) * chunkLineElementsP2)] = 5;
+			chunkFields[treeCenter.X + (treeCenter.Y * chunkLineElements) + ((treeCenter.Z + h) * chunkLineElementsP2)] = 22;
 		}
 	}
 
